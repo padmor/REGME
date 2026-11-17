@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#102b46">
+<title>UCC Physics Practical | Student Portal</title>
+<style>
+:root{--navy:#102b46;--navy2:#173d60;--blue:#2563eb;--blue2:#3b82f6;--sky:#eaf3ff;--ink:#172b40;--muted:#718096;--line:#e6edf4;--paper:#fff;--bg:#f4f7fb;--green:#137a55;--green-bg:#e8f7ef;--amber:#a66a13;--amber-bg:#fff6e5;--red:#b83d4b;--shadow:0 12px 34px rgba(20,45,73,.07);--radius:18px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
+.login-screen{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:22px;background:radial-gradient(circle at 15% 15%,#2b6392 0,transparent 33%),radial-gradient(circle at 90% 80%,#1e5f83 0,transparent 32%),linear-gradient(135deg,#0c2239,#163e63 65%,#102b46)}
+.login-card{width:min(440px,100%);padding:34px;background:#fff;border:1px solid #ffffff88;border-radius:26px;box-shadow:0 30px 90px #081b2d66}
+.brandmark{height:48px;width:48px;display:grid;place-items:center;border-radius:15px;background:linear-gradient(145deg,#1d4f7b,#0e2944);color:#fff;font-weight:850;font-size:20px;box-shadow:0 8px 18px #102b4630}
+.login-card h1{font-size:25px;letter-spacing:-.7px;line-height:1.2;color:var(--navy);margin:22px 0 8px}.login-card>p{margin:0 0 25px;color:var(--muted)}.field{margin:14px 0}.field label{display:block;font-size:12px;font-weight:750;color:#485d71;margin:0 0 7px}.field input,.field select{width:100%;height:45px;padding:0 13px;background:#fbfdff;border:1px solid #dce5ef;border-radius:11px;color:var(--ink)}.field input::placeholder{color:#a4b0bd}.login-actions{display:grid;gap:10px;margin-top:20px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;border:1px solid var(--line);border-radius:11px;background:#fff;padding:9px 14px;color:#29435b;font-weight:720;transition:.18s ease}.btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px #102b4612}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn.primary:hover{background:#1d4ed8}.btn.ghost{background:#f6f9fc;border-color:#e9eff5}.btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}.login-note{margin-top:17px;padding:11px 12px;border-radius:11px;background:#f1f6fb;color:#687d91;font-size:11px}
+.shell.hidden,.login-screen.hidden{display:none!important}.topbar{height:72px;position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,3vw,36px)}
+.brand{display:flex;align-items:center;gap:12px;color:var(--navy);font-weight:800;letter-spacing:-.2px}.brand .brandmark{height:40px;width:40px;border-radius:13px;font-size:16px}.brand small{display:block;font-size:10px;color:#8b9bad;font-weight:650;letter-spacing:.8px;text-transform:uppercase;margin-top:1px}
+.top-actions{display:flex;align-items:center;gap:12px}.demo-label{display:inline-flex;align-items:center;gap:7px;color:#8a631c;background:#fff8e9;border:1px solid #f2e4c4;padding:6px 10px;border-radius:99px;font-size:10px;font-weight:800;letter-spacing:.35px}.demo-dot{width:6px;height:6px;border-radius:50%;background:#d69a32}.role-toggle{display:flex;align-items:center;padding:4px;background:#f0f4f8;border:1px solid #e9eef4;border-radius:12px}.role-toggle button{border:0;background:transparent;padding:7px 11px;border-radius:8px;color:#718096;font-size:12px;font-weight:750}.role-toggle button.active{background:#fff;color:var(--navy);box-shadow:0 2px 7px #132a4018}.user-chip{display:flex;align-items:center;gap:9px;padding-left:12px;border-left:1px solid var(--line)}.avatar{width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:#e9f2ff;color:#245ba5;font-weight:850;font-size:12px}.user-chip strong{display:block;font-size:12px;color:var(--navy)}.user-chip small{display:block;font-size:10px;color:#8a98a8}
+.app-layout{display:grid;grid-template-columns:228px minmax(0,1fr);min-height:calc(100vh - 72px)}.sidebar{padding:25px 14px;background:#fff;border-right:1px solid var(--line)}.side-caption{padding:0 12px;margin:8px 0 12px;font-size:10px;font-weight:850;color:#9aa8b7;letter-spacing:1.1px;text-transform:uppercase}.nav-list{display:grid;gap:4px}.nav-btn{display:flex;align-items:center;gap:12px;width:100%;height:43px;padding:0 12px;text-align:left;border:0;border-radius:11px;background:transparent;color:#5c7084;font-weight:680}.nav-btn .ico{width:20px;text-align:center;font-size:16px}.nav-btn:hover{background:#f5f8fc;color:var(--navy)}.nav-btn.active{background:#edf4ff;color:#205cba}.sidebar-note{margin:28px 7px 0;padding:14px;border-radius:13px;background:#f5f8fb;color:#8090a0;font-size:11px;line-height:1.55}.sidebar-note strong{display:block;color:#435b72;margin-bottom:4px}
+main{min-width:0;padding:30px clamp(16px,3.4vw,46px) 48px}.content{max-width:1250px;margin:0 auto}.eyebrow{color:#8a9bad;font-size:11px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;margin:0 0 7px}.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:23px}.page-head h1{margin:0;color:var(--navy);font-size:26px;line-height:1.2;letter-spacing:-.8px}.page-head p{margin:7px 0 0;color:var(--muted);font-size:13px}.head-actions{display:flex;gap:8px;flex-wrap:wrap}
+.hero{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:27px 30px;margin-bottom:18px;border-radius:21px;background:linear-gradient(115deg,#102b46,#1d4c76 68%,#24658b);color:#fff;box-shadow:0 16px 34px #153d6022}.hero:after{content:"";position:absolute;width:245px;height:245px;right:7%;top:-145px;border:1px solid #ffffff22;border-radius:50%;box-shadow:0 0 0 28px #ffffff08,0 0 0 58px #ffffff06}.hero-copy{position:relative;z-index:1;max-width:600px}.hero-kicker{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#b7d9f6;font-weight:850}.hero h2{font-size:24px;line-height:1.2;letter-spacing:-.7px;margin:7px 0}.hero p{color:#d0e1ef;margin:0;font-size:12px}.hero .btn{position:relative;z-index:1;flex:none;background:#fff;border-color:#fff;color:#173c61}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-bottom:17px}.stat-card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:17px 18px;box-shadow:0 4px 14px #142d4906;min-width:0}.stat-top{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#77899b;font-size:11px;font-weight:700}.stat-icon{width:30px;height:30px;display:grid;place-items:center;border-radius:10px;background:#eff5ff;color:#2f68bd;font-size:15px}.stat-value{margin:11px 0 2px;color:var(--navy);font-size:24px;font-weight:850;letter-spacing:-.8px}.stat-foot{font-size:10px;color:#91a0af}
+.columns{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(270px,.9fr);gap:16px;align-items:start}.card{min-width:0;background:#fff;border:1px solid var(--line);border-radius:17px;padding:19px;box-shadow:0 4px 14px #142d4906}.card+.card{margin-top:15px}.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}.card-head h3{margin:0;font-size:14px;color:var(--navy);letter-spacing:-.2px}.text-link{border:0;background:transparent;color:#2765ba;font-size:11px;font-weight:800;padding:4px}.session-item,.activity-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-top:1px solid #edf1f5}.session-item:first-of-type,.activity-item:first-of-type{border-top:0}.session-main{display:flex;align-items:center;gap:12px;min-width:0}.date-tile{width:43px;height:46px;flex:none;border-radius:11px;background:#eff5ff;color:#245fae;display:grid;align-content:center;justify-items:center}.date-tile b{font-size:15px;line-height:1.1}.date-tile small{font-size:9px;text-transform:uppercase;font-weight:800}.session-main strong,.activity-item strong{display:block;font-size:12px;color:#263f57}.session-main small,.activity-item small{display:block;margin-top:3px;color:#8a99a8;font-size:10px}.status{display:inline-flex;align-items:center;white-space:nowrap;padding:5px 9px;border-radius:99px;font-size:10px;font-weight:800;background:#eef2f6;color:#62758a}.status.green{background:var(--green-bg);color:var(--green)}.status.amber{background:var(--amber-bg);color:var(--amber)}.status.blue{background:#eaf2ff;color:#2b62af}
+.progress-wrap{margin:10px 0 2px}.progress-row{display:flex;justify-content:space-between;color:#7b8c9e;font-size:10px;margin-bottom:8px}.progress{height:7px;background:#edf2f6;border-radius:20px;overflow:hidden}.progress span{display:block;height:100%;border-radius:20px;background:linear-gradient(90deg,#2563eb,#60a5fa);width:0%;transition:width .25s}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.form-grid .field{margin:0}.form-grid .field.full{grid-column:1/-1}.form-help{color:#8a99a8;font-size:10px;margin-top:5px}.notice{border:1px solid #dbeafe;background:#f1f7ff;color:#456687;padding:12px 14px;border-radius:12px;font-size:11px;margin-bottom:15px}.notice.warn{border-color:#f1e3c4;background:#fff9ec;color:#8a682f}
+.table-wrap{overflow:auto;border:1px solid #edf1f5;border-radius:12px}.table{border-collapse:collapse;width:100%;min-width:590px}.table th{text-align:left;padding:12px 13px;background:#f8fafc;color:#8b9aaa;font-size:9px;text-transform:uppercase;letter-spacing:.9px;white-space:nowrap}.table td{padding:13px;border-top:1px solid #edf1f5;color:#53687d;font-size:11px;vertical-align:middle}.table td strong{color:#263f57}.table tr:hover td{background:#fbfdff}
+.empty{padding:26px 12px;text-align:center;color:#8495a6;font-size:12px}.empty-icon{margin:0 auto 9px;width:38px;height:38px;border-radius:12px;background:#f1f5f9;display:grid;place-items:center;font-size:17px}.button-row{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}.settings-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-top:1px solid #edf1f5}.settings-row:first-of-type{border-top:0}.settings-row strong{display:block;font-size:12px}.settings-row small{display:block;color:#8a99a8;font-size:10px;margin-top:3px}.footer{text-align:center;padding:25px 0 8px;color:#a0adba;font-size:10px}.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:50;padding:11px 16px;border-radius:12px;background:#142f4b;color:#fff;box-shadow:0 12px 34px #0d243b33;font-size:12px;font-weight:700;transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:980px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.columns{grid-template-columns:1fr}.sidebar{padding:18px 10px}.app-layout{grid-template-columns:190px minmax(0,1fr)}}
+@media(max-width:650px){.topbar{height:64px;padding:0 13px}.brand .brandmark{width:36px;height:36px}.brand small{font-size:8px}.demo-label{display:none}.user-chip{display:none}.role-toggle button{padding:7px 8px;font-size:10px}.app-layout{display:block;min-height:calc(100vh - 64px)}.sidebar{position:sticky;top:64px;z-index:8;padding:8px 9px;border-right:0;border-bottom:1px solid var(--line);overflow-x:auto}.side-caption,.sidebar-note{display:none}.nav-list{display:flex;gap:5px;min-width:max-content}.nav-btn{width:auto;height:37px;padding:0 11px;font-size:11px;gap:7px}.nav-btn .ico{font-size:13px}main{padding:21px 13px 35px}.page-head{margin-bottom:17px}.page-head h1{font-size:22px}.page-head p{font-size:12px}.hero{padding:21px;border-radius:17px;align-items:flex-start;flex-direction:column}.hero h2{font-size:21px}.hero .btn{width:100%}.stats{gap:9px}.stat-card{padding:13px}.stat-value{font-size:21px}.stat-top{font-size:10px}.stat-icon{width:27px;height:27px}.card{padding:15px;border-radius:15px}.form-grid{grid-template-columns:1fr}.form-grid .field.full{grid-column:auto}.head-actions .btn{min-height:36px;padding:8px 10px;font-size:11px}.session-item{align-items:flex-start}.session-item>.btn{min-height:34px;padding:7px 9px;font-size:10px}.login-card{padding:27px 22px;border-radius:21px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="loginScreen" class="login-screen">
+  <section class="login-card">
+    <div class="brandmark">U</div>
+    <h1>UCC Physics Practical</h1>
+    <p>Student registration and practical scheduling portal</p>
+    <form id="loginForm">
+      <div class="field"><label for="loginIdentity">Username, email or student ID</label><input id="loginIdentity" name="identity" autocomplete="username" placeholder="Enter any name or ID"></div>
+      <div class="field"><label for="loginPassword">Password</label><input id="loginPassword" name="password" type="password" autocomplete="current-password" placeholder="Enter any password"></div>
+      <div class="login-actions"><button class="btn primary" type="submit">Enter portal <span aria-hidden="true">→</span></button><button id="guestBtn" class="btn ghost" type="button">Continue as guest</button></div>
+    </form>
+    <div class="login-note">Demo access is open. Any values — or no values — will let you enter. This preview uses browser-only sample data and does not connect to a database or charge payments.</div>
+  </section>
+</div>
+<div id="appShell" class="shell hidden">
+  <header class="topbar">
+    <div class="brand"><div class="brandmark">U</div><div>UCC Physics Practical<small>Registration portal</small></div></div>
+    <div class="top-actions"><span class="demo-label"><i class="demo-dot"></i> DEMO · LOCAL ONLY</span><div class="role-toggle" aria-label="Switch demo role"><button id="studentRole" class="active" type="button">Student</button><button id="adminRole" type="button">Admin</button></div><div class="user-chip"><div id="userAvatar" class="avatar">ST</div><div><strong id="userName">Student</strong><small id="userRoleLabel">Student workspace</small></div></div></div>
+  </header>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="side-caption" id="navCaption">Student workspace</div>
+      <nav class="nav-list" id="navList"></nav>
+      <div class="sidebar-note"><strong>Preview workspace</strong>Actions update this browser only. No records are sent to a university database.</div>
+    </aside>
+    <main><div class="content" id="pageContent"></div><div class="footer">University of Cape Coast · Physics Practical Registration · Interactive preview</div></main>
+  </div>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script>
+(function(){
+  "use strict";
+  const STORAGE_KEY = "ucc_physics_demo_v2";
+  const sessions = [
+    {code:"PHY 101",name:"Mechanics & Properties of Matter",day:"24",month:"NOV",date:"24 Nov 2026",time:"09:00 – 11:00",venue:"Science Block · Lab 1",capacity:24},
+    {code:"PHY 103",name:"Electricity and Magnetism",day:"25",month:"NOV",date:"25 Nov 2026",time:"13:00 – 15:00",venue:"Science Block · Lab 2",capacity:18},
+    {code:"PHY 105",name:"Waves and Optics",day:"27",month:"NOV",date:"27 Nov 2026",time:"10:00 – 12:00",venue:"Science Block · Lab 3",capacity:20}
+  ];
+  const blankState = {role:"student",page:"overview",user:"Student",registrations:[],payments:[],settings:{open:true,fee:50}};
+  let state = loadState();
+  let toastTimer = null;
+  const $ = id => document.getElementById(id);
+  function loadState(){
+    try{const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||"null");return saved?Object.assign({},blankState,saved,{settings:Object.assign({},blankState.settings,saved.settings||{})}):Object.assign({},blankState);}
+    catch(e){return Object.assign({},blankState);}
+  }
+  function saveState(){
+    try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}
+    catch(e){/* Browser storage may be disabled; the demo still works in memory. */}
+  }
+  function escapeHTML(value){
+    return String(value==null?"":value).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+  }
+  function money(value){return "GH₵ "+Number(value||0).toFixed(2);}
+  function initials(value){return String(value||"Student").trim().split(/\s+/).slice(0,2).map(x=>x[0]||"").join("").toUpperCase()||"ST";}
+  function notify(message){
+    $("toast").textContent=message;$("toast").classList.add("show");
+    clearTimeout(toastTimer);toastTimer=setTimeout(()=>$("toast").classList.remove("show"),2600);
+  }
+  function enter(identity){
+    const clean=String(identity||"").trim();
+    state.user=clean||"Guest Student";state.role="student";state.page="overview";saveState();
+    $("loginScreen").classList.add("hidden");$("appShell").classList.remove("hidden");render();
+  }
+  $("loginForm").addEventListener("submit",function(event){
+    event.preventDefault();
+    enter($("loginIdentity").value);
+  });
+  $("guestBtn").addEventListener("click",()=>enter("Guest Student"));
+  $("studentRole").addEventListener("click",()=>setRole("student"));
+  $("adminRole").addEventListener("click",()=>setRole("admin"));
+  function setRole(role){
+    state.role=role;state.page="overview";saveState();render();
+  }
+  function navItems(){
+    return state.role==="student"
+      ?[{id:"overview",icon:"⌂",label:"Overview"},{id:"sessions",icon:"◷",label:"Practical sessions"},{id:"register",icon:"＋",label:"Register"},{id:"payments",icon:"₵",label:"Payments"},{id:"history",icon:"▤",label:"My registrations"}]
+      :[{id:"overview",icon:"⌂",label:"Overview"},{id:"registrations",icon:"▤",label:"Registrations"},{id:"schedules",icon:"◷",label:"Schedules"},{id:"settings",icon:"⚙",label:"Settings"}];
+  }
+  function go(page){state.page=page;saveState();render();}
+  function pageHead(eyebrow,title,description,action){
+    return '<div class="page-head"><div><div class="eyebrow">'+eyebrow+'</div><h1>'+title+'</h1><p>'+description+'</p></div>'+(action?'<div class="head-actions">'+action+'</div>':'')+'</div>';
+  }
+  function stat(label,value,foot,icon){
+    return '<div class="stat-card"><div class="stat-top"><span>'+label+'</span><span class="stat-icon">'+icon+'</span></div><div class="stat-value">'+value+'</div><div class="stat-foot">'+foot+'</div></div>';
+  }
+  function statusPill(value){
+    const type=value==="Paid"||value==="Successful"?"green":value==="Failed"?"amber":value==="Awaiting payment"||value==="Pending"?"amber":"blue";
+    return '<span class="status '+type+'">'+escapeHTML(value)+'</span>';
+  }
+  function registrationsCount(){return state.registrations.length;}
+  function paidCount(){return state.registrations.filter(r=>r.status==="Paid").length;}
+  function successfulPayments(){return state.payments.filter(p=>p.status==="Successful");}
+  function render(){
+    $("studentRole").classList.toggle("active",state.role==="student");
+    $("adminRole").classList.toggle("active",state.role==="admin");
+    $("userName").textContent=state.user;$("userAvatar").textContent=initials(state.user);
+    $("userRoleLabel").textContent=state.role==="student"?"Student workspace":"Administrator preview";
+    $("navCaption").textContent=state.role==="student"?"Student workspace":"Administration";
+    $("navList").innerHTML=navItems().map(item=>'<button type="button" class="nav-btn '+(state.page===item.id?"active":"")+'" data-page="'+item.id+'"><span class="ico">'+item.icon+'</span>'+item.label+'</button>').join("");
+    $("navList").querySelectorAll("button").forEach(button=>button.addEventListener("click",()=>go(button.dataset.page)));
+    const root=$("pageContent");
+    root.innerHTML=state.role==="student"?renderStudent():renderAdmin();
+    bindPageActions();
+  }
+  function renderStudent(){
+    const name=escapeHTML((state.user||"Student").split(/\s+/)[0]);
+    const latest=state.registrations[state.registrations.length-1];
+    if(state.page==="overview"){
+      const paid=paidCount(),progress=state.registrations.length?Math.round(paid/state.registrations.length*100):0;
+      return '<div class="hero"><div class="hero-copy"><div class="hero-kicker">STUDENT PORTAL · 2026/2027</div><h2>Good to see you, '+name+'.</h2><p>Keep your practical sessions, registrations and payments together in one simple place.</p></div><button class="btn" data-go="register">＋ Start registration</button></div>'+
+      '<div class="stats">'+stat("My registrations",registrationsCount(),registrationsCount()?"Saved in this browser":"No registrations yet","▤")+stat("Payments completed",successfulPayments().length,"Simulated only","✓")+stat("Available sessions",sessions.length,"Practical sessions listed","◷")+stat("Registration fee",money(state.settings.fee),"Per practical registration","₵")+'</div>'+
+      '<div class="columns"><section class="card"><div class="card-head"><h3>Upcoming practical sessions</h3><button class="text-link" data-go="sessions">View all</button></div>'+sessions.slice(0,3).map(sessionCard).join("")+'</section><section><div class="card"><div class="card-head"><h3>Registration progress</h3>'+statusPill(latest?latest.status:"Not started")+'</div><div class="progress-wrap"><div class="progress-row"><span>Paid registrations</span><strong>'+progress+'%</strong></div><div class="progress"><span style="width:'+progress+'%"></span></div></div><div class="settings-row"><div><strong>Next step</strong><small>'+(latest&&latest.status==="Paid"?"Your registration is marked paid.":"Choose a practical and submit your details.")+'</small></div><button class="btn" data-go="'+(latest&&latest.status!=="Paid"?"payments":"register")+'">'+(latest&&latest.status!=="Paid"?"Pay":"Register")+'</button></div></div><div class="card"><div class="card-head"><h3>Quick links</h3></div><div class="settings-row"><div><strong>My registrations</strong><small>See your submitted details</small></div><button class="btn" data-go="history">Open</button></div><div class="settings-row"><div><strong>Payments</strong><small>View demo transactions</small></div><button class="btn" data-go="payments">Open</button></div></div></section></div>';
+    }
+    if(state.page==="sessions"){
+      return pageHead("STUDENT WORKSPACE","Practical sessions","Browse the practical sessions available in this preview.",'<button class="btn primary" data-go="register">＋ Register now</button>')+
+      '<div class="columns"><section class="card"><div class="card-head"><h3>Available sessions</h3>'+statusPill("Open")+'</div>'+sessions.map(sessionCard).join("")+'</section><section class="card"><h3>Before you register</h3><div class="activity-item"><div><strong>Choose your course practical</strong><small>Select the session that matches your course.</small></div></div><div class="activity-item"><div><strong>Submit your details</strong><small>Enter your student and contact information.</small></div></div><div class="activity-item"><div><strong>Complete the demo payment</strong><small>Use the simulator to test the payment state.</small></div></div></section></div>';
+    }
+    if(state.page==="register"){
+      return pageHead("STUDENT WORKSPACE","Register for a practical","Enter your details to create a sample registration.",'<button class="btn" data-go="sessions">View sessions</button>')+
+      (state.settings.open?'<div class="notice">Registration is open in this preview. Your submission is saved only in this browser.</div>':'<div class="notice warn">Registration is closed in the admin preview. Switch to Admin → Settings to reopen it.</div>')+
+      '<section class="card"><form id="registrationForm"><div class="form-grid"><div class="field"><label for="regName">Full name</label><input id="regName" name="name" value="'+escapeHTML(state.user==="Guest Student"?"":state.user)+'" placeholder="Enter your full name" required></div><div class="field"><label for="regStudentId">Student ID</label><input id="regStudentId" name="studentId" placeholder="e.g. PS/PHY/26/001" required></div><div class="field"><label for="regProgramme">Programme</label><select id="regProgramme" name="programme"><option>BSc Physics</option><option>BSc Physics Education</option><option>BSc Engineering Physics</option><option>Other</option></select></div><div class="field"><label for="regSession">Practical session</label><select id="regSession" name="session">'+sessions.map(s=>'<option value="'+s.code+'">'+s.code+' · '+s.name+'</option>').join("")+'</select></div><div class="field full"><label for="regEmail">Email address</label><input id="regEmail" name="email" type="email" placeholder="name@example.com"><div class="form-help">Optional in this demo. No confirmation email will be sent.</div></div></div><div class="button-row"><button class="btn primary" type="submit" '+(!state.settings.open?"disabled":"")+'>Submit registration →</button><button class="btn" type="reset">Clear form</button></div></form></section>';
+    }
+    if(state.page==="payments"){
+      const options=state.registrations.map(r=>'<option value="'+escapeHTML(r.id)+'">'+escapeHTML(r.name)+' · '+escapeHTML(r.session)+' · '+escapeHTML(r.id)+'</option>').join("");
+      return pageHead("STUDENT WORKSPACE","Payments","Review your sample transactions or simulate a payment.")+
+      '<div class="notice">Demo payment only. This page does not contact Paystack, request mobile money, or charge real money.</div><div class="stats">'+stat("Practical fee",money(state.settings.fee),"Configured demo amount","₵")+stat("Successful",successfulPayments().length,"Simulated transactions","✓")+stat("Failed",state.payments.filter(p=>p.status==="Failed").length,"Simulated failures","!")+stat("Provider","Local demo","No payment gateway connected","◈")+'</div>'+
+      '<section class="card"><div class="card-head"><h3>Payment simulator</h3>'+statusPill("Demo only")+'</div>'+(state.registrations.length?'<div class="field"><label for="paymentRegistration">Choose a registration</label><select id="paymentRegistration">'+options+'</select></div><div class="button-row"><button class="btn primary" id="paySuccess">Simulate successful payment</button><button class="btn" id="payFail">Simulate failed payment</button></div>':'<div class="empty"><div class="empty-icon">₵</div>No registration to pay for yet. Create a registration first.</div><button class="btn primary" data-go="register">Start registration</button>')+'</section>'+
+      '<section class="card"><div class="card-head"><h3>Recent transactions</h3></div>'+paymentTable()+'</section>';
+    }
+    if(state.page==="history"){
+      return pageHead("STUDENT WORKSPACE","My registrations","Your sample registrations are listed below.")+
+      '<section class="card"><div class="card-head"><h3>Registration history</h3><button class="btn primary" data-go="register">＋ New registration</button></div>'+registrationTable(false)+'</section>';
+    }
+    return pageHead("STUDENT WORKSPACE","Overview","Your practical registration summary.")+'<section class="card"><button class="btn primary" data-go="overview">Return to overview</button></section>';
+  }
+  function sessionCard(s){
+    const selected=state.registrations.some(r=>r.session===s.code);
+    return '<div class="session-item"><div class="session-main"><div class="date-tile"><b>'+s.day+'</b><small>'+s.month+'</small></div><div><strong>'+s.code+' · '+s.name+'</strong><small>'+s.date+' · '+s.time+'<br>'+s.venue+'</small></div></div><button class="btn" data-go="register">'+(selected?"Register again":"Select session")+'</button></div>';
+  }
+  function registrationTable(admin){
+    if(!state.registrations.length)return '<div class="empty"><div class="empty-icon">▤</div>No registrations have been created in this browser yet.</div>';
+    return '<div class="table-wrap"><table class="table"><thead><tr><th>Reference</th><th>Student</th><th>Student ID</th><th>Session</th><th>Programme</th><th>Status</th></tr></thead><tbody>'+state.registrations.slice().reverse().map(r=>'<tr><td><strong>'+escapeHTML(r.id)+'</strong></td><td>'+escapeHTML(r.name)+'<br><small>'+escapeHTML(r.email||"No email supplied")+'</small></td><td>'+escapeHTML(r.studentId)+'</td><td>'+escapeHTML(r.session)+'</td><td>'+escapeHTML(r.programme)+'</td><td>'+statusPill(r.status)+'</td></tr>').join("")+'</tbody></table></div>';
+  }
+  function paymentTable(){
+    if(!state.payments.length)return '<div class="empty">No payment attempts have been made yet.</div>';
+    return '<div class="table-wrap"><table class="table"><thead><tr><th>Reference</th><th>Registration</th><th>Amount</th><th>Date</th><th>Status</th></tr></thead><tbody>'+state.payments.slice().reverse().map(p=>'<tr><td><strong>'+escapeHTML(p.id)+'</strong></td><td>'+escapeHTML(p.registration)+'</td><td>'+money(p.amount)+'</td><td>'+escapeHTML(p.date)+'</td><td>'+statusPill(p.status)+'</td></tr>').join("")+'</tbody></table></div>';
+  }
+  function renderAdmin(){
+    if(state.page==="overview"){
+      return '<div class="hero"><div class="hero-copy"><div class="hero-kicker">ADMIN CONSOLE · DEMO VIEW</div><h2>Simple oversight, at a glance.</h2><p>Review browser-only registrations, inspect payment simulations and manage the demo settings.</p></div><button class="btn" data-go="registrations">Review registrations →</button></div>'+
+      '<div class="stats">'+stat("Total registrations",registrationsCount(),"Sample student records","▤")+stat("Paid registrations",paidCount(),"Payment state marked successful","✓")+stat("Demo revenue",money(successfulPayments().reduce((sum,p)=>sum+Number(p.amount||0),0)),"Simulated only","₵")+stat("Registration status",state.settings.open?"Open":"Closed","Change in settings","◷")+'</div>'+
+      '<div class="columns"><section class="card"><div class="card-head"><h3>Recent registrations</h3><button class="text-link" data-go="registrations">View all</button></div>'+adminRecent()+'</section><section class="card"><div class="card-head"><h3>Admin shortcuts</h3></div><div class="settings-row"><div><strong>Registrations</strong><small>Review all sample entries</small></div><button class="btn" data-go="registrations">Open</button></div><div class="settings-row"><div><strong>Schedules</strong><small>Review session information</small></div><button class="btn" data-go="schedules">Open</button></div><div class="settings-row"><div><strong>Settings</strong><small>Adjust the demo fee and availability</small></div><button class="btn" data-go="settings">Open</button></div></section></div>';
+    }
+    if(state.page==="registrations")return pageHead("ADMINISTRATION","Student registrations","All registrations created in this browser demo.")+'<section class="card"><div class="card-head"><h3>Registration list</h3><span class="status blue">'+registrationsCount()+' records</span></div>'+registrationTable(true)+'</section>';
+    if(state.page==="schedules")return pageHead("ADMINISTRATION","Practical schedules","Sample timetable available in the preview.")+'<section class="card"><div class="card-head"><h3>Session schedule</h3></div><div class="table-wrap"><table class="table"><thead><tr><th>Course</th><th>Practical</th><th>Date</th><th>Time</th><th>Venue</th><th>Places</th></tr></thead><tbody>'+sessions.map(s=>'<tr><td><strong>'+s.code+'</strong></td><td>'+s.name+'</td><td>'+s.date+'</td><td>'+s.time+'</td><td>'+s.venue+'</td><td>'+s.capacity+'</td></tr>').join("")+'</tbody></table></div></section>';
+    if(state.page==="settings")return pageHead("ADMINISTRATION","Demo settings","Adjust how the front-end preview behaves.")+'<section class="card"><form id="settingsForm"><div class="field"><label for="settingOpen">Registration availability</label><select id="settingOpen"><option value="true" '+(state.settings.open?"selected":"")+'>Open</option><option value="false" '+(!state.settings.open?"selected":"")+'>Closed</option></select></div><div class="field"><label for="settingFee">Practical registration fee (GH₵)</label><input id="settingFee" type="number" min="0" step=".01" value="'+Number(state.settings.fee).toFixed(2)+'"></div><div class="button-row"><button class="btn primary" type="submit">Save settings</button><button class="btn" id="resetDemo" type="button">Reset demo data</button></div></form><div class="notice" style="margin-top:18px">Settings and sample records remain in this browser only. They do not modify the live university system or any database.</div></section>';
+    return pageHead("ADMINISTRATION","Admin console","Preview management controls.")+'<section class="card"><button class="btn primary" data-go="overview">Return to overview</button></section>';
+  }
+  function adminRecent(){
+    if(!state.registrations.length)return '<div class="empty">No student registrations yet.</div>';
+    return state.registrations.slice(-5).reverse().map(r=>'<div class="activity-item"><div><strong>'+escapeHTML(r.name)+'</strong><small>'+escapeHTML(r.session)+' · '+escapeHTML(r.id)+'</small></div>'+statusPill(r.status)+'</div>').join("");
+  }
+  function bindPageActions(){
+    document.querySelectorAll("[data-go]").forEach(button=>button.addEventListener("click",()=>go(button.dataset.go)));
+    const registrationForm=$("registrationForm");
+    if(registrationForm)registrationForm.addEventListener("submit",submitRegistration);
+    const settingsForm=$("settingsForm");
+    if(settingsForm)settingsForm.addEventListener("submit",saveSettings);
+    if($("paySuccess"))$("paySuccess").addEventListener("click",()=>simulatePayment(true));
+    if($("payFail"))$("payFail").addEventListener("click",()=>simulatePayment(false));
+    if($("resetDemo"))$("resetDemo").addEventListener("click",resetDemo);
+  }
+  function submitRegistration(event){
+    event.preventDefault();
+    if(!state.settings.open){notify("Registration is closed in this demo.");return;}
+    const data=Object.fromEntries(new FormData(event.currentTarget).entries());
+    const record={id:"DEMO-"+String(Date.now()).slice(-7),name:data.name.trim(),studentId:data.studentId.trim(),programme:data.programme,session:data.session,email:data.email.trim(),date:new Date().toLocaleDateString(),status:"Awaiting payment"};
+    if(!record.name||!record.studentId){notify("Please enter your name and student ID.");return;}
+    state.registrations.push(record);saveState();state.page="payments";render();notify("Registration saved in this browser.");
+  }
+  function simulatePayment(success){
+    const selector=$("paymentRegistration");if(!selector||!selector.value){notify("Select a registration first.");return;}
+    const registration=state.registrations.find(r=>r.id===selector.value);if(!registration){notify("Registration not found.");return;}
+    const payment={id:"SIM-"+String(Date.now()).slice(-8),registration:registration.id,amount:Number(state.settings.fee),date:new Date().toLocaleString(),status:success?"Successful":"Failed"};
+    state.payments.push(payment);if(success)registration.status="Paid";saveState();render();notify(success?"Demo payment successful — no money was charged.":"Demo payment marked failed — no money was charged.");
+  }
+  function saveSettings(event){
+    event.preventDefault();state.settings.open=$("settingOpen").value==="true";state.settings.fee=Math.max(0,Number($("settingFee").value)||0);saveState();render();notify("Demo settings saved.");
+  }
+  function resetDemo(){
+    if(!window.confirm("Clear all sample registrations and payments from this browser?"))return;
+    state.registrations=[];state.payments=[];saveState();render();notify("Demo records cleared.");
+  }
+  render();
+})();
+</script>
+</body>
+</html>
