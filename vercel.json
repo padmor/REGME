@@ -2,6 +2,7 @@
   "version": 2,
   "buildCommand": "node scripts/unpack-bundle.js",
   "installCommand": "npm install",
+  "outputDirectory": "app/public",
   "rewrites": [
     {
       "source": "/(.*)",
