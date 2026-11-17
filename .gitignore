@@ -1,0 +1,7 @@
+node_modules/
+app/
+.bundle.tar
+.env
+.env.local
+.env*.local
+*.log
