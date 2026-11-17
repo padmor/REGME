@@ -2,15 +2,6 @@
   "version": 2,
   "buildCommand": "node scripts/unpack-bundle.js",
   "installCommand": "npm install",
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/api/index"
-    }
-  ],
-  "functions": {
-    "api/index.js": {
-      "includeFiles": "app/public/**"
-    }
-  }
+  "framework": "express",
+  "regions": ["fra1"]
 }
