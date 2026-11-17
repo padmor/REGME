@@ -1,0 +1,1 @@
+// Vercel Express application entrypoint.\nmodule.exports = require('./app/server/index');\n
