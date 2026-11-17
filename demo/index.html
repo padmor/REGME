@@ -212,7 +212,13 @@ main{min-width:0;padding:30px clamp(16px,3.4vw,46px) 48px}.content{max-width:125
     event.preventDefault();
     if(!state.settings.open){notify("Registration is closed in this demo.");return;}
     const data=Object.fromEntries(new FormData(event.currentTarget).entries());
-    const record={id:"REG-"+String(Date.now()).slice(-8),name:data.name.trim(),studentId:data.studentId.trim(),programme:data.programme,level:data.level||"",phone:data.phone||"",session:data.session,email:data.email.trim(),date:new Date().toLocaleDateString(),status:"Awaiting payment"};
+    const chosen=sessions.find(s=>s.code===data.session);
+    if(!chosen||chosen.closed){notify("That practical section is no longer open. Choose another session.");return;}
+    const enrolled=state.registrations.filter(r=>r.session===chosen.code);
+    if(enrolled.length>=Number(chosen.capacity)){notify("That section is full. Please select another time.");return;}
+    const studentId=data.studentId.trim();
+    if(state.registrations.some(r=>r.session===chosen.code&&String(r.studentId).toLowerCase()===studentId.toLowerCase())){notify("You are already registered for this section.");return;}
+    const record={id:"REG-"+String(Date.now()).slice(-8),name:data.name.trim(),studentId,programme:data.programme,level:data.level||"",phone:data.phone||"",session:data.session,email:data.email.trim(),date:new Date().toLocaleDateString(),status:"Awaiting payment"};
     if(!record.name||!record.studentId){notify("Please enter your name and student ID.");return;}
     state.registrations.push(record);saveState();state.page="payments";render();notify("Registration saved in this browser.");
   }
