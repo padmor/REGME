@@ -181,7 +181,7 @@ main{min-width:0;padding:30px clamp(16px,3.4vw,46px) 48px}.content{max-width:125
   }
   function registrationTable(admin){
     if(!state.registrations.length)return '<div class="empty"><div class="empty-icon">▤</div>No registrations have been created in this browser yet.</div>';
-    return '<div class="table-wrap"><table class="table"><thead><tr><th>Reference</th><th>Student</th><th>Student ID</th><th>Session</th><th>Programme</th><th>Status</th></tr></thead><tbody>'+state.registrations.slice().reverse().map(r=>'<tr><td><strong>'+escapeHTML(r.id)+'</strong></td><td>'+escapeHTML(r.name)+'<br><small>'+escapeHTML(r.email||"No email supplied")+'</small></td><td>'+escapeHTML(r.studentId)+'</td><td>'+escapeHTML(r.session)+'</td><td>'+escapeHTML(r.programme)+'</td><td>'+statusPill(r.status)+'</td></tr>').join("")+'</tbody></table></div>';
+    return '<div class="table-wrap"><table class="table"><thead><tr><th>Reference</th><th>Student</th><th>Student ID</th><th>Programme / Level</th><th>Contact</th><th>Session</th><th>Status</th></tr></thead><tbody>'+state.registrations.slice().reverse().map(r=>'<tr><td><strong>'+escapeHTML(r.id)+'</strong></td><td>'+escapeHTML(r.name)+'<br><small>'+escapeHTML(r.email||"No email supplied")+'</small></td><td>'+escapeHTML(r.studentId)+'</td><td>'+escapeHTML(r.programme)+'<br><small>'+escapeHTML(r.level||"")+'</small></td><td>'+escapeHTML(r.phone||"")+'</td><td>'+escapeHTML(r.session)+'</td><td>'+statusPill(r.status)+'</td></tr>').join("")+'</tbody></table></div>';
   }
   function paymentTable(){
     if(!state.payments.length)return '<div class="empty">No payment attempts have been made yet.</div>';
