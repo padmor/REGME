@@ -61,14 +61,15 @@ main{min-width:0;padding:30px clamp(16px,3.4vw,46px) 48px}.content{max-width:125
 <script>
 (function(){
   "use strict";
-  const STORAGE_KEY = "ucc_physics_demo_v2";
-  const sessions = [
+  const STORAGE_KEY = "ucc_physics_demo_v3";
+  let sessions = [
     {code:"PHY 101",name:"Mechanics & Properties of Matter",day:"24",month:"NOV",date:"24 Nov 2026",time:"09:00 – 11:00",venue:"Science Block · Lab 1",capacity:24},
     {code:"PHY 103",name:"Electricity and Magnetism",day:"25",month:"NOV",date:"25 Nov 2026",time:"13:00 – 15:00",venue:"Science Block · Lab 2",capacity:18},
     {code:"PHY 105",name:"Waves and Optics",day:"27",month:"NOV",date:"27 Nov 2026",time:"10:00 – 12:00",venue:"Science Block · Lab 3",capacity:20}
   ];
-  const blankState = {role:"student",page:"overview",user:"Student",registrations:[],payments:[],settings:{open:true,fee:50}};
+  const blankState = {role:"student",page:"overview",user:"Student",registrations:[],payments:[],sessions:null,settings:{open:true,fee:50}};
   let state = loadState();
+  if(Array.isArray(state.sessions))sessions=state.sessions;
   let toastTimer = null;
   const $ = id => document.getElementById(id);
   function loadState(){
@@ -76,7 +77,7 @@ main{min-width:0;padding:30px clamp(16px,3.4vw,46px) 48px}.content{max-width:125
     catch(e){return Object.assign({},blankState);}
   }
   function saveState(){
-    try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}
+    try{state.sessions=sessions;localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}
     catch(e){/* Browser storage may be disabled; the demo still works in memory. */}
   }
   function escapeHTML(value){
@@ -194,7 +195,8 @@ main{min-width:0;padding:30px clamp(16px,3.4vw,46px) 48px}.content{max-width:125
       '<div class="columns"><section class="card"><div class="card-head"><h3>Recent registrations</h3><button class="text-link" data-go="registrations">View all</button></div>'+adminRecent()+'</section><section class="card"><div class="card-head"><h3>Admin shortcuts</h3></div><div class="settings-row"><div><strong>Registrations</strong><small>Review all sample entries</small></div><button class="btn" data-go="registrations">Open</button></div><div class="settings-row"><div><strong>Schedules</strong><small>Review session information</small></div><button class="btn" data-go="schedules">Open</button></div><div class="settings-row"><div><strong>Settings</strong><small>Adjust the demo fee and availability</small></div><button class="btn" data-go="settings">Open</button></div></section></div>';
     }
     if(state.page==="registrations")return pageHead("ADMINISTRATION","Student registrations","All registrations created in this browser demo.")+'<section class="card"><div class="card-head"><h3>Registration list</h3><span class="status blue">'+registrationsCount()+' records</span></div>'+registrationTable(true)+'</section>';
-    if(state.page==="schedules")return pageHead("ADMINISTRATION","Practical schedules","Sample timetable available in the preview.")+'<section class="card"><div class="card-head"><h3>Session schedule</h3></div><div class="table-wrap"><table class="table"><thead><tr><th>Course</th><th>Practical</th><th>Date</th><th>Time</th><th>Venue</th><th>Places</th></tr></thead><tbody>'+sessions.map(s=>'<tr><td><strong>'+s.code+'</strong></td><td>'+s.name+'</td><td>'+s.date+'</td><td>'+s.time+'</td><td>'+s.venue+'</td><td>'+s.capacity+'</td></tr>').join("")+'</tbody></table></div></section>';
+    if(state.page==="schedules")return pageHead("ADMINISTRATION","Session management","Create practical sections and publish the date, time, venue and capacity.")+
+      '<section class="card"><div class="card-head"><h3>Create a practical session</h3>'+statusPill("Admin control")+'</div><form id="sessionForm"><div class="form-grid"><div class="field"><label>Course / section code</label><input name="code" placeholder="PHY 201-A" required></div><div class="field"><label>Practical title</label><input name="name" placeholder="Mechanics practical" required></div><div class="field"><label>Date</label><input name="date" type="date" required></div><div class="field"><label>Start time</label><input name="start" type="time" required></div><div class="field"><label>End time</label><input name="end" type="time" required></div><div class="field"><label>Venue</label><input name="venue" placeholder="Science Block · Lab 1" required></div><div class="field"><label>Capacity</label><input name="capacity" type="number" min="1" max="200" value="20" required></div></div><div class="button-row"><button class="btn primary" type="submit">＋ Create session</button></div></form></section><section class="card"><div class="card-head"><h3>Student-selectable sessions</h3><span class="status blue">'+sessions.length+' sessions</span></div><div class="table-wrap"><table class="table"><thead><tr><th>Course</th><th>Practical</th><th>Date</th><th>Time</th><th>Venue</th><th>Capacity</th><th>Action</th></tr></thead><tbody>'+sessions.map((s,i)=>'<tr><td><strong>'+escapeHTML(s.code)+'</strong></td><td>'+escapeHTML(s.name)+'</td><td>'+escapeHTML(s.date)+'</td><td>'+escapeHTML(s.time)+'</td><td>'+escapeHTML(s.venue)+'</td><td>'+s.capacity+'</td><td><button class="btn" data-session-toggle="'+i+'">'+(s.closed?'Reopen':'Close')+'</button></td></tr>').join("")+'</tbody></table></div></section>';
     if(state.page==="reports")return pageHead("ADMINISTRATION","Reports & analytics","Review registration and payment activity for this workspace.")+'<div class="stats">'+stat("Total registrations",registrationsCount(),"All recorded entries","▤")+stat("Paid registrations",paidCount(),"Successful payment state","✓")+stat("Pending payments",state.registrations.filter(r=>r.status==="Awaiting payment").length,"Awaiting payment","◷")+stat("Recorded payments",state.payments.length,"Successful and declined attempts","₵")+'</div><section class="card"><div class="card-head"><h3>Registration summary</h3><button class="btn" id="exportRegistrations">Export CSV</button></div>'+registrationTable(true)+'</section>';
     if(state.page==="settings")return pageHead("ADMINISTRATION","Demo settings","Adjust how the front-end preview behaves.")+'<section class="card"><form id="settingsForm"><div class="field"><label for="settingOpen">Registration availability</label><select id="settingOpen"><option value="true" '+(state.settings.open?"selected":"")+'>Open</option><option value="false" '+(!state.settings.open?"selected":"")+'>Closed</option></select></div><div class="field"><label for="settingFee">Practical registration fee (GH₵)</label><input id="settingFee" type="number" min="0" step=".01" value="'+Number(state.settings.fee).toFixed(2)+'"></div><div class="button-row"><button class="btn primary" type="submit">Save settings</button><button class="btn" id="resetDemo" type="button">Reset demo data</button></div></form><div class="notice" style="margin-top:18px">Settings and sample records remain in this browser only. They do not modify the live university system or any database.</div></section>';
     return pageHead("ADMINISTRATION","Admin console","Preview management controls.")+'<section class="card"><button class="btn primary" data-go="overview">Return to overview</button></section>';
@@ -213,10 +215,13 @@ main{min-width:0;padding:30px clamp(16px,3.4vw,46px) 48px}.content{max-width:125
     if($("exportRegistrations"))$("exportRegistrations").addEventListener("click",exportRegistrations);
     const settingsForm=$("settingsForm");
     if(settingsForm)settingsForm.addEventListener("submit",saveSettings);
+    if($("sessionForm"))$("sessionForm").addEventListener("submit",createSession);
+    document.querySelectorAll("[data-session-toggle]").forEach(button=>button.addEventListener("click",()=>{const s=sessions[Number(button.dataset.sessionToggle)];s.closed=!s.closed;saveState();render();notify(s.closed?"Session closed to students.":"Session reopened for students.");}));
     if($("paySuccess"))$("paySuccess").addEventListener("click",()=>simulatePayment(true));
     if($("payFail"))$("payFail").addEventListener("click",()=>simulatePayment(false));
     if($("resetDemo"))$("resetDemo").addEventListener("click",resetDemo);
   }
+  function createSession(event){event.preventDefault();const d=Object.fromEntries(new FormData(event.currentTarget).entries());if(d.end<=d.start){notify("End time must be after start time.");return;}const date=new Date(d.date+"T00:00:00");const item={code:d.code.trim().toUpperCase(),name:d.name.trim(),date:date.toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"}),day:String(date.getDate()).padStart(2,"0"),month:date.toLocaleDateString("en",{month:"short"}).toUpperCase(),time:d.start+" – "+d.end,venue:d.venue.trim(),capacity:Number(d.capacity),closed:false};if(sessions.some(s=>s.code.toLowerCase()===item.code.toLowerCase())){notify("That section code already exists.");return;}sessions.push(item);saveState();render();notify("Practical session published for students.");}
   function submitRegistration(event){
     event.preventDefault();
     if(!state.settings.open){notify("Registration is closed in this demo.");return;}
