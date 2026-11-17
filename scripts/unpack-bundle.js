@@ -18,15 +18,10 @@ fs.mkdirSync(appDir, { recursive: true });
 execFileSync('tar', ['-xf', tarPath, '-C', appDir, '--strip-components=1'], { stdio: 'inherit' });
 fs.unlinkSync(tarPath);
 
-// Make the interactive demo the public homepage while retaining the original
-// production landing page at /production.html and the previous /demo.html URL.
+// Keep the original production frontend at / and expose the isolated demo
+// only at /demo.html. Never replace the production homepage with local-only UI.
 const publicDir = path.join(appDir, 'public');
 fs.mkdirSync(publicDir, { recursive: true });
-const landingPage = path.join(publicDir, 'index.html');
-if (fs.existsSync(landingPage)) {
-  fs.copyFileSync(landingPage, path.join(publicDir, 'production.html'));
-}
 const demoPage = path.join(root, 'demo', 'index.html');
-fs.copyFileSync(demoPage, landingPage);
 fs.copyFileSync(demoPage, path.join(publicDir, 'demo.html'));
-console.log('UCC Physics Practical source unpacked; interactive demo installed as homepage.');
+console.log('UCC Physics Practical source unpacked; production homepage preserved and isolated demo exposed at /demo.html.');
