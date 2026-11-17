@@ -31,22 +31,15 @@ main{min-width:0;padding:30px clamp(16px,3.4vw,46px) 48px}.content{max-width:125
 </head>
 <body>
 <div id="loginScreen" class="login-screen">
-  <section class="login-card">
-    <div class="brandmark">U</div>
-    <h1>UCC Physics Practical</h1>
-    <p>Student registration and practical scheduling portal</p>
-    <form id="loginForm">
-      <div class="field"><label for="loginIdentity">Username, email or student ID</label><input id="loginIdentity" name="identity" autocomplete="username" placeholder="Enter any name or ID"></div>
-      <div class="field"><label for="loginPassword">Password</label><input id="loginPassword" name="password" type="password" autocomplete="current-password" placeholder="Enter any password"></div>
-      <div class="login-actions"><button class="btn primary" type="submit">Enter portal <span aria-hidden="true">→</span></button><button id="guestBtn" class="btn ghost" type="button">Continue as guest</button></div>
-    </form>
-    <div class="login-note">Demo access is open. Any values — or no values — will let you enter. This preview uses browser-only sample data and does not connect to a database or charge payments.</div>
-  </section>
-</div>
+<section class="login-card" id="studentLogin"><div class="brandmark">U</div><div class="eyebrow" style="margin-top:18px">UNIVERSITY OF CAPE COAST</div><h1>Physics Practical Registration</h1><p>Choose your practical section and register without manual grouping.</p>
+<form id="loginForm"><div class="field"><label for="loginIdentity">Student name or ID</label><input id="loginIdentity" name="identity" placeholder="Enter your student ID or name" required></div><div class="field"><label for="loginPassword">Password</label><input id="loginPassword" type="password" placeholder="Preview sign-in"></div><div class="login-actions"><button class="btn primary" type="submit">Continue to student portal →</button><button id="guestBtn" class="btn ghost" type="button">Explore as guest</button></div></form>
+<div class="login-note">Interactive preview: data is stored in this browser. No live university account or payment is used.</div><button id="showAdminLogin" class="text-link" type="button" style="margin-top:16px">Administrator sign in →</button></section>
+<section class="login-card hidden" id="adminLogin"><div class="brandmark">U</div><div class="eyebrow" style="margin-top:18px">RESTRICTED WORKSPACE</div><h1>Administrator sign in</h1><p>Create practical sections, set time slots and manage student registrations.</p>
+<form id="adminLoginForm"><div class="field"><label for="adminEmail">Admin email</label><input id="adminEmail" type="email" value="admin@ucc.edu.gh" required></div><div class="field"><label for="adminPass">Password</label><input id="adminPass" type="password" placeholder="Enter preview password" required></div><div class="login-actions"><button class="btn primary" type="submit">Open admin workspace →</button><button id="backToStudent" class="btn ghost" type="button">Back to student sign in</button></div></form><div class="login-note">Preview credentials: admin@ucc.edu.gh / uccadmin. This is not production authentication.</div></section></div>
 <div id="appShell" class="shell hidden">
   <header class="topbar">
     <div class="brand"><div class="brandmark">U</div><div>UCC Physics Practical<small>Registration portal</small></div></div>
-    <div class="top-actions"><span class="demo-label"><i class="demo-dot"></i> DEMO · LOCAL ONLY</span><div class="role-toggle" aria-label="Switch demo role"><button id="studentRole" class="active" type="button">Student</button><button id="adminRole" type="button">Admin</button></div><div class="user-chip"><div id="userAvatar" class="avatar">ST</div><div><strong id="userName">Student</strong><small id="userRoleLabel">Student workspace</small></div></div></div>
+    <div class="top-actions"><span class="demo-label"><i class="demo-dot"></i> DEMO · LOCAL ONLY</span><div class="user-chip"><div id="userAvatar" class="avatar">ST</div><div><strong id="userName">Student</strong><small id="userRoleLabel">Student workspace</small></div></div></div>
   </header>
   <div class="app-layout">
     <aside class="sidebar">
@@ -89,21 +82,16 @@ main{min-width:0;padding:30px clamp(16px,3.4vw,46px) 48px}.content{max-width:125
     $("toast").textContent=message;$("toast").classList.add("show");
     clearTimeout(toastTimer);toastTimer=setTimeout(()=>$("toast").classList.remove("show"),2600);
   }
-  function enter(identity){
+  function enter(identity,role){
     const clean=String(identity||"").trim();
-    state.user=clean||"Guest Student";state.role="student";state.page="overview";saveState();
+    state.user=clean||"Guest Student";state.role=role||"student";state.page="overview";saveState();
     $("loginScreen").classList.add("hidden");$("appShell").classList.remove("hidden");render();
   }
-  $("loginForm").addEventListener("submit",function(event){
-    event.preventDefault();
-    enter($("loginIdentity").value);
-  });
-  $("guestBtn").addEventListener("click",()=>enter("Guest Student"));
-  $("studentRole").addEventListener("click",()=>setRole("student"));
-  $("adminRole").addEventListener("click",()=>setRole("admin"));
-  function setRole(role){
-    state.role=role;state.page="overview";saveState();render();
-  }
+  $("loginForm").addEventListener("submit",event=>{event.preventDefault();enter($("loginIdentity").value,"student");});
+  $("guestBtn").addEventListener("click",()=>enter("Guest Student","student"));
+  $("showAdminLogin").addEventListener("click",()=>{$("studentLogin").classList.add("hidden");$("adminLogin").classList.remove("hidden");});
+  $("backToStudent").addEventListener("click",()=>{$("adminLogin").classList.add("hidden");$("studentLogin").classList.remove("hidden");});
+  $("adminLoginForm").addEventListener("submit",event=>{event.preventDefault();if($("adminEmail").value.trim().toLowerCase()!=="admin@ucc.edu.gh"||$("adminPass").value!=="uccadmin"){notify("Invalid preview admin credentials.");return;}enter("Physics Administrator","admin");});
   function navItems(){
     return state.role==="student"
       ?[{id:"overview",icon:"⌂",label:"Overview"},{id:"sessions",icon:"◷",label:"Practical sessions"},{id:"register",icon:"＋",label:"Register"},{id:"payments",icon:"₵",label:"Payments"},{id:"history",icon:"▤",label:"My registrations"},{id:"profile",icon:"◎",label:"My profile"}]
@@ -124,8 +112,6 @@ main{min-width:0;padding:30px clamp(16px,3.4vw,46px) 48px}.content{max-width:125
   function paidCount(){return state.registrations.filter(r=>r.status==="Paid").length;}
   function successfulPayments(){return state.payments.filter(p=>p.status==="Successful");}
   function render(){
-    $("studentRole").classList.toggle("active",state.role==="student");
-    $("adminRole").classList.toggle("active",state.role==="admin");
     $("userName").textContent=state.user;$("userAvatar").textContent=initials(state.user);
     $("userRoleLabel").textContent=state.role==="student"?"Student workspace":"Administrator preview";
     $("navCaption").textContent=state.role==="student"?"Student workspace":"Administration";
@@ -151,7 +137,7 @@ main{min-width:0;padding:30px clamp(16px,3.4vw,46px) 48px}.content{max-width:125
     if(state.page==="register"){
       return pageHead("STUDENT WORKSPACE","Register for a practical","Enter your details to create a sample registration.",'<button class="btn" data-go="sessions">View sessions</button>')+
       (state.settings.open?'<div class="notice">Registration is open in this preview. Your submission is saved only in this browser.</div>':'<div class="notice warn">Registration is closed in the admin preview. Switch to Admin → Settings to reopen it.</div>')+
-      '<section class="card"><form id="registrationForm"><div class="form-grid"><div class="field"><label for="regName">Full name</label><input id="regName" name="name" value="'+escapeHTML(state.user==="Guest Student"?"":state.user)+'" placeholder="Enter your full name" required></div><div class="field"><label for="regStudentId">Student ID</label><input id="regStudentId" name="studentId" placeholder="e.g. PS/PHY/26/001" required></div><div class="field"><label for="regProgramme">Programme</label><select id="regProgramme" name="programme"><option>BSc Physics</option><option>BSc Physics Education</option><option>BSc Engineering Physics</option><option>Other</option></select></div><div class="field"><label for="regSession">Practical session</label><select id="regSession" name="session">'+sessions.map(s=>'<option value="'+s.code+'">'+s.code+' · '+s.name+'</option>').join("")+'</select></div><div class="field"><label for="regLevel">Academic level</label><select id="regLevel" name="level"><option>Level 100</option><option>Level 200</option><option>Level 300</option><option>Level 400</option></select></div><div class="field"><label for="regPhone">Phone number</label><input id="regPhone" name="phone" type="tel" placeholder="0XX XXX XXXX" required></div><div class="field full"><label for="regEmail">Email address</label><input id="regEmail" name="email" type="email" placeholder="name@example.com"><div class="form-help">Used for the registration record.</div></div></div><div class="button-row"><button class="btn primary" type="submit" '+(!state.settings.open?"disabled":"")+'>Submit registration →</button><button class="btn" type="reset">Clear form</button></div></form></section>';
+      '<section class="card"><form id="registrationForm"><div class="form-grid"><div class="field"><label for="regName">Full name</label><input id="regName" name="name" value="'+escapeHTML(state.user==="Guest Student"?"":state.user)+'" placeholder="Enter your full name" required></div><div class="field"><label for="regStudentId">Student ID</label><input id="regStudentId" name="studentId" placeholder="e.g. PS/PHY/26/001" required></div><div class="field"><label for="regProgramme">Programme</label><select id="regProgramme" name="programme"><option>BSc Physics</option><option>BSc Physics Education</option><option>BSc Engineering Physics</option><option>Other</option></select></div><div class="field"><label for="regSession">Practical session</label><select id="regSession" name="session">'+sessions.filter(s=>!s.closed).map(s=>'<option value="'+s.code+'">'+s.code+' · '+s.name+'</option>').join("")+'</select></div><div class="field"><label for="regLevel">Academic level</label><select id="regLevel" name="level"><option>Level 100</option><option>Level 200</option><option>Level 300</option><option>Level 400</option></select></div><div class="field"><label for="regPhone">Phone number</label><input id="regPhone" name="phone" type="tel" placeholder="0XX XXX XXXX" required></div><div class="field full"><label for="regEmail">Email address</label><input id="regEmail" name="email" type="email" placeholder="name@example.com"><div class="form-help">Used for the registration record.</div></div></div><div class="button-row"><button class="btn primary" type="submit" '+(!state.settings.open?"disabled":"")+'>Submit registration →</button><button class="btn" type="reset">Clear form</button></div></form></section>';
     }
     if(state.page==="payments"){
       const options=state.registrations.map(r=>'<option value="'+escapeHTML(r.id)+'">'+escapeHTML(r.name)+' · '+escapeHTML(r.session)+' · '+escapeHTML(r.id)+'</option>').join("");
